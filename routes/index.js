@@ -18,8 +18,8 @@ router.post('/', (req, res, next) => {
   queries.createNotification(req.body).then(notifications => {
     client.messages.create({
     body: `Type: ${notifications[0].type} Message: ${notifications[0].message}`,
-    to: '+19709855659',  // Text this number
-    from: '+13372427734' // From a valid Twilio number
+    to: '+19709855659',  // Add Official Number to .env
+    from: process.env.TWILIO_NUMBER // Leave this one alone.
     })
   .then((message) => console.log(message.sid, message));
       res.json('Success!')
