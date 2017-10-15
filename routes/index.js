@@ -2,7 +2,11 @@ const express = require('express')
 const router = express.Router()
 const knex = require('../db/knex')
 const queries = require('../db/queries')
+const twilio = require('twilio');
+require('dotenv').config()
 
+
+const client = new twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_TOKEN);
 
 router.get('/', (req, res) => {
   queries.getAll().then(notifications => {
@@ -12,12 +16,17 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res, next) => {
   queries.createNotification(req.body).then(notifications => {
-    console.log('send text here');
-    res.json('Success!')
-}).catch(error => {
-  console.log(error);
-  res.status(500).json({message: "Failure..."})
-})
+    client.messages.create({
+    body: `Type: ${notifications[0].type} Message: ${notifications[0].message}`,
+    to: '+19709855659',  // Text this number
+    from: '+13372427734' // From a valid Twilio number
+    })
+  .then((message) => console.log(message.sid, message));
+      res.json('Success!')
+  }).catch(error => {
+    console.log(error);
+    res.status(500).json({message: "Failure..."})
+  })
 })
 
 module.exports = router
