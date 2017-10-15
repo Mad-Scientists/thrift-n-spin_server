@@ -13,8 +13,11 @@ router.get('/', (req, res) => {
 router.post('/', (req, res, next) => {
   queries.createNotification(req.body).then(notifications => {
     console.log('send text here');
-    res.json(notifications[0])
-  })
+    res.json('Success!')
+}).catch(error => {
+  console.log(error);
+  res.status(500).json({message: "Failure..."})
+})
 })
 
 module.exports = router

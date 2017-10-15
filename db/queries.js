@@ -5,6 +5,6 @@ module.exports = {
     return knex('notification').orderBy('created', 'desc');
   },
   createNotification(notification) {
-    return knex('notification').insert(notification, '*');
+    return knex('notification').insert(notification, '*')
   }
 }
