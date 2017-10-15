@@ -1,9 +1,20 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express')
+const router = express.Router()
+const knex = require('../db/knex')
+const queries = require('../db/queries')
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
 
-module.exports = router;
+router.get('/', (req, res) => {
+  queries.getAll().then(notifications => {
+    res.json(notifications)
+  })
+})
+
+router.post('/', (req, res, next) => {
+  queries.createNotification(req.body).then(notifications => {
+    console.log('send text here');
+    res.json(notifications[0])
+  })
+})
+
+module.exports = router

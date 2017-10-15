@@ -1,7 +1,6 @@
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
-var cookieParser = require('cookie-parser')
 var cors = require('cors')
 const app = express()
 
@@ -13,10 +12,6 @@ app.use(express.static(path.join(__dirname, '/../', 'node_modules')))
 
 app.use('/api/notification', require('./routes/index'))
 
-if (process.env.NODE_ENV !== 'test') {
-  const logger = require('morgan')
-  app.use(logger('dev'))
-}
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found')
